@@ -1,6 +1,16 @@
 class CPF {
+
   // Formatar número de CPF
-  static String format(String cpf) {
+  static String format(String cpf, { bool onlyComplete = true }) {
+    if (onlyComplete) {
+      return _formatComplete(cpf);
+    } else {
+      return _formatIncomplete(cpf);
+    }
+  }
+
+  // Formatar número de CPF completos
+  static String _formatComplete(String cpf) {
     if (cpf == null) return null;
 
     // Obter somente os números do CPF
@@ -10,7 +20,28 @@ class CPF {
     if (numeros.length != 11) return cpf;
 
     // Retornar CPF formatado
-    return "${numeros.substring(0, 3)}.${numeros.substring(3, 6)}.${numeros.substring(6, 9)}-${numeros.substring(9)}";
+    return '${numeros.substring(0, 3)}.${numeros.substring(3, 6)}'
+        '.${numeros.substring(6, 9)}-${numeros.substring(9)}';
+  }
+
+  // Formatar número de CPF incompletos
+  static String _formatIncomplete(String cpf) {
+    if (cpf == null) return null;
+
+    // Obter somente os números do CPF
+    var numeros = cpf.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (numeros.length <= 3) return numeros.toString();
+    if (numeros.length <= 6) {
+      return '${numeros.substring(0, 3)}.${numeros.substring(3, numeros.length)}';
+    }
+    if (numeros.length <= 9) {
+      return '${numeros.substring(0, 3)}.${numeros.substring(3, 6)}'
+          '.${numeros.substring(6, numeros.length)}';
+    }
+    // Retornar CPF formatado
+    return '${numeros.substring(0, 3)}.${numeros.substring(3, 6)}'
+        '.${numeros.substring(6, 9)}-${numeros.substring(9)}';
   }
 
   // Validar número de CPF

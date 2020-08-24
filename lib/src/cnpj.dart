@@ -1,6 +1,16 @@
 class CNPJ {
+
   // Formatar número de CNPJ
-  static String format(String cnpj) {
+  static String format(String cnpj, { bool onlyComplete = true }) {
+    if (onlyComplete) {
+      return _formatComplete(cnpj);
+    } else {
+      return _formatIncomplete(cnpj);
+    }
+  }
+
+  // Formatar número de CNPJ completos
+  static String _formatComplete(String cnpj) {
     if (cnpj == null) return null;
 
     // Obter somente os números do CNPJ
@@ -10,7 +20,35 @@ class CNPJ {
     if (numeros.length != 14) return cnpj;
 
     // Retornar CPF formatado
-    return "${numeros.substring(0, 2)}.${numeros.substring(2, 5)}.${numeros.substring(5, 8)}/${numeros.substring(8, 12)}-${numeros.substring(12)}";
+    return '${numeros.substring(0, 2)}.${numeros.substring(2, 5)}'
+        '.${numeros.substring(5, 8)}/${numeros.substring(8, 12)}'
+        '-${numeros.substring(12)}';
+  }
+
+  // Formatar número de CNPJ incompletos
+  static String _formatIncomplete(String cnpj) {
+    if (cnpj == null) return null;
+
+    // Obter somente os números do CNPJ
+    var numeros = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // Testar se o CNPJ possui 14 dígitos
+    if (numeros.length <= 2) return numeros.toString();
+    if (numeros.length <= 5) {
+      return '${numeros.substring(0, 2)}.${numeros.substring(2, numeros.length)}';
+    }
+    if (numeros.length <= 8) {
+      return '${numeros.substring(0, 2)}.${numeros.substring(2, 5)}'
+          '.${numeros.substring(5, numeros.length)}';
+    }
+    if (numeros.length <= 12) {
+      return '${numeros.substring(0, 2)}.${numeros.substring(2, 5)}'
+          '.${numeros.substring(5, 8)}/${numeros.substring(8, numeros.length)}';
+    }
+    // Retornar CPF formatado
+    return '${numeros.substring(0, 2)}.${numeros.substring(2, 5)}'
+        '.${numeros.substring(5, 8)}/${numeros.substring(8, 12)}'
+        '-${numeros.substring(12)}';
   }
 
   // Validar número de CNPJ

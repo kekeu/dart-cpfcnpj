@@ -5,5 +5,6 @@ library cpfcnpj;
 
 export 'src/cpf.dart';
 export 'src/cnpj.dart';
+export 'src/cpfcnpj.dart';
 
 // TODO: Export any libraries intended for clients of this package.
